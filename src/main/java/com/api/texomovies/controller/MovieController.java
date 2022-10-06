@@ -20,11 +20,13 @@ public class MovieController {
     public Result awardsInterval(){
         Map<String,List<Integer>> yearByProducers = new HashMap<>();
         List<Movie> movies = movieRepository.findAll();
+        List<Movie> moviesWinner = new ArrayList<>();
         for(Movie movie : movies){
             if(!movie.isWinner()){
                 continue;
             }
-            List<String> producers = Arrays.asList(movie.getProducers().split(","));
+            moviesWinner.add(movie);
+            List<String> producers = Arrays.asList(movie.getProducers().split("(,|\\sand\\s)"));
             for(String producer : producers){
                 List<Integer> years = yearByProducers.getOrDefault(producer.trim(), new ArrayList<>());
                 years.add(movie.getYears());
