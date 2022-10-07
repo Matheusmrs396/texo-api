@@ -26,7 +26,7 @@ public class MovieController {
                 continue;
             }
             moviesWinner.add(movie);
-            List<String> producers = Arrays.asList(movie.getProducers().split("(,|\\sand\\s)"));
+            List<String> producers = Arrays.asList(movie.getProducers().split("(,\\s|\\sand\\s)"));
             for(String producer : producers){
                 List<Integer> years = yearByProducers.getOrDefault(producer.trim(), new ArrayList<>());
                 years.add(movie.getYears());
