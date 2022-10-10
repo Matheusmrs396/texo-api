@@ -5,8 +5,10 @@ import com.api.texomovies.payload.ProducerAward;
 import com.api.texomovies.payload.Result;
 import com.api.texomovies.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
@@ -17,6 +19,7 @@ import java.util.*;
 public class MovieController {
     private final MovieRepository movieRepository;
     @GetMapping("/awards-interval")
+    @ResponseStatus(HttpStatus.OK)
     public Result awardsInterval(){
         Map<String,List<Integer>> yearByProducers = new HashMap<>();
         List<Movie> movies = movieRepository.findAll();

@@ -5,11 +5,38 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TexoMoviesApplicationTests {
+public class TexoMoviesApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Assertions.assertEquals(0,1);
 	}
 
 }
+//TODO: exeplo de testes
+//@WebMvcTest
+//public class WebLayerTest {
+
+//	@Autowired
+//	private MockMvc mockMvc;
+
+//	@Test
+//	public void shouldReturnDefaultMessage() throws Exception {
+//		this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
+//				.andExpect(content().string(containsString("Hello, World")));
+//	}
+//}
+//TODO: Exemplo 2
+
+//@SpringBootTest
+//@AutoConfigureMockMvc
+//public class TestingWebApplicationTest {
+
+//	@Autowired
+//	private MockMvc mockMvc;
+
+//	@Test
+//	public void shouldReturnDefaultMessage() throws Exception {
+//		this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
+//				.andExpect(content().string(containsString("Hello, World")));
+//	}
+//}
