@@ -5,11 +5,11 @@ import com.api.texomovies.payload.ProducerAward;
 import com.api.texomovies.payload.Result;
 import com.api.texomovies.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -18,6 +18,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MovieController {
     private final MovieRepository movieRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
     @GetMapping("/awards-interval")
     @ResponseStatus(HttpStatus.OK)
     public Result awardsInterval(){
@@ -49,5 +52,43 @@ public class MovieController {
 
 
         return new Result(min, max);
+    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Movie saveMovie(@RequestBody Movie movie){
+
+        return movieRepository.save(movie);
+    }
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Movie> listAllMovies(){
+        return movieRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<Movie> movieById(@PathVariable("id") Long  id){
+            return Optional.ofNullable(movieRepository.findById(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "movie doesn't exist")));
+    }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMovieById(@PathVariable("id") Long  id){
+        movieRepository.findById(id)
+                .map(movie -> {
+                    movieRepository.deleteById(id);
+                    return Void.TYPE;
+                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "movie doesn't exist"));
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateMovieById(@PathVariable("id") Long  id, @RequestBody Movie movie){
+        movieRepository.findById(id)
+                .map(movieBase -> {
+                    modelMapper.map(movie, movieBase);
+                    movieRepository.save(movieBase);
+                    return Void.TYPE;
+                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "movie doesn't exist"));
     }
 }
